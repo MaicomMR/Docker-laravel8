@@ -1,10 +1,10 @@
 version: '3'
 
 services:
- atlas-docs:
+ project-two:
   build: .
-  image: maicommr/laravel-app
-  container_name: chewbacca-api
+  image: maicommr/laravel8
+  container_name: project2
   volumes:
    - .:/var/www
   networks:
@@ -22,28 +22,28 @@ services:
 
  nginx:
   build: docker_config/nginx
-  container_name: chewbacca-nginx
+  container_name: project2-nginx
   entrypoint: dockerize -template /etc/nginx/conf.d/nginx.conf:/etc/nginx/conf.d/nginx.conf nginx -g "daemon off";
   environment:
-   - APP_NAME=atlas-docs
+   - APP_NAME=project-two
    - APP_PORT=9000
   restart: always
   tty: true
   ports:
-   - "8000:80"
+   - "6969:80"
   volumes:
    - .:/var/www
   networks:
    - app-network
   depends_on:
-   - atlas-docs
+   - project-two
   # entrypoint: dockerize -template ./docker_config/nginx/nginx.conf:/etc/nginx/conf.d
 
 
 
  redis:
   image: redis:alpine
-  container_name: atlas-docs-redis
+  container_name: project2-redis
   expose:
    - 6379
   networks:
@@ -52,7 +52,7 @@ services:
  db:
   image: mysql:5.7
   command: --innodb-use-native-aio=0
-  container_name: chewbacca-database
+  container_name: project2-database
   restart: always
   tty: true
   ports:
